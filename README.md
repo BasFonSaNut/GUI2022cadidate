@@ -1,8 +1,8 @@
 # GUI2022cadidate
 - design หน้าตา tkinter GUI สำหรับเข้่าประกวดชิงรางวัล GUI 2022 Bootcamp ของคุณลุงวิศวะ
 - ประกอบด้วยสองไฟล์ :    2 ไฟล์ code, 1 folder(image folder) , 1 file image ภาพ captue หน้าจอ ที่ยังไม่ได้ลง code
-- รันด้วย python python GUIcandidatemodify.py
-- เนื่องด้วยจำนวน control ที่มามาย จึงไม่อยากให้เด็กเสียเวลาไปกับ การจัดตำแหน่งของ control หากแมนนวลเขียนเอง
+- รันด้วย python GUIcandidatemodify.py
+- เนื่องด้วยจำนวน control ที่มากมาย จึงไม่อยากให้เด็กเสียเวลาไปกับ การจัดตำแหน่งของ control หากแมนนวลเขียนเอง
 - โค้ช จึงแนะนำให้ใช้ tool แทน ดังนั้น หน้า design ณ step นี้ จึงไม่การ coding แม้แต่บรรทัดเดียว
 - tool ที่ใช้ ชื่อว่า PAGE Download ได้ที่ https://sourceforge.net/projects/page/ 
 - สิ่อเรียนรู้การสอน รวม แก้ปัญหาเมือนำมาติดตั้งแล้วใช้ไม่ได้ https://www.youtube.com/watch?v=TLi4tsBIe4s&t=466s&ab_channel=Rathodvipul
