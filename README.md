@@ -1,6 +1,6 @@
 # GUI2022cadidate
 - design หน้าตา tkinter GUI สำหรับเข้่าประกวดชิงรางวัล GUI 2022 Bootcamp ของคุณลุงวิศวะ
-- ประกอบด้วยสองไฟล์ 2 ไฟล์ code, 1 folder(image folder) , 1 file image ภาพ captue หน้าจอ ที่ยังไม่ได้ลง code
+- ประกอบด้วยสองไฟล์ :    2 ไฟล์ code, 1 folder(image folder) , 1 file image ภาพ captue หน้าจอ ที่ยังไม่ได้ลง code
 - รันด้วย python python GUIcandidatemodify.py
 - เนื่องด้วยจำนวน control ที่มามาย จึงไม่อยากให้เด็กเสียเวลาไปกับ การจัดตำแหน่งของ control หากแมนนวลเขียนเอง
 - โค้ช จึงแนะนำให้ใช้ tool แทน ดังนั้น หน้า design ณ step นี้ จึงไม่การ coding แม้แต่บรรทัดเดียว
