@@ -5,13 +5,22 @@
 #  in conjunction with Tcl version 8.6
 #    Feb 26, 2022 12:15:32 PM +07  platform: Windows NT
 #    Feb 26, 2022 12:29:43 PM +07  platform: Windows NT
+#    Feb 26, 2022 04:56:02 PM +07  platform: Windows NT
+#    Feb 26, 2022 05:15:04 PM +07  platform: Windows NT
+#    Feb 27, 2022 01:42:29 PM +07  platform: Windows NT
 
+from cgitb import text
 import sys
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter.constants import *
+# for date interval
+import pandas as pd
+from datetime import datetime,timedelta
+# end for date interval
 
 import GUIcandidatemodify
+import sqlite3
 
 def main(*args):
     '''Main entry point for the application.'''
@@ -22,49 +31,186 @@ def main(*args):
     global _top1, _w1
     _top1 = root
     _w1 = GUIcandidatemodify.Toplevel1(_top1)
+    # clear radio and checkbox to deselect
+    _w1.Radiobutton_cow.deselect()
+    _w1.Radiobutton_buff.deselect()
+    _w1.Radiobutton_borrow.deselect()
+    _w1.Radiobutton_return.deselect()
+    # end clear radio and checkbox to deselect
+    
+    #set active date to current date
+    todaydate = datetime.today()
+    _w1.Label_activedatetime.config(text = todaydate.strftime("%d-%b-%Y"))
+    _w1.Entry_dateborrow.insert(END,todaydate.strftime("%d-%b-%Y"))
+    _w1.Entry_timeborrow.insert(END, todaydate.strftime("%H:%M"))
+    
+    # _w1.Scrolledtreeview_transaction.config(selectmode="none")
+    #end set active date to current date
+    
     root.mainloop()
+    
 
-def calculateExtracharge(*args):
-    print('GUIcandidatemodify_support.calculateExtracharge')
-    for arg in args:
-        print ('another arg:', arg)
-    sys.stdout.flush()
+def createdbSqlite(*args):
+    print('GUIcandidatemodify_support.createdbSqlite')   
+    conn = sqlite3.connect('1.db')
+    print("เปิดฐานข้อมูลสำเร็จ")
+    
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS cowbuffborrowing
+        (id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cid           TEXT    NOT NULL,
+        fullname      TEXT    NOT NULL,
+        dateborrow      CHAR(50)    NOT NULL,
+        timeborrow      CHAR(50)    NOT NULL,
+        datereturn      CHAR(50),
+        timereturn      CHAR(50),
+        borrowtype      CHAR(10),
+        extrahour       INTEGER     DEFAULT 0,
+        extracharge     REAL        DEFAULT 0,
+        borrowstatus    INTEGER     DEFAULT 0);''')
+    
+    conn.commit()  
+    print("สร้างตารางสำเร็จ")     
+    conn.close()
 
+
+def Button_EditClick(*args):
+    print('GUIcandidatemodify_support.Button_EditClick')
+    _w1.Entry_tmpvalue.delete(0,END)
+    _w1.Entry_tmpvalue.insert(END, 'EDIT')
+    
+    curItem = _w1.Scrolledtreeview_transaction.focus()
+    selectedRow=_w1.Scrolledtreeview_transaction.item(curItem)
+    
+    # print(type(selectedRow))
+    values=selectedRow.get('values')
+    print(values[0],values[1],values[2],values[3],values[4])
+    id = values[0]
+    cid = str(values[1])
+    res = cid.partition('9999')[0]
+    cid =  res
+    fullname = values[2]
+    borrowdate = values[3]
+    borrowtime = values[4]
+    
+    _w1.Entry_cid.delete(0,END)
+    _w1.Entry_cid.insert(END, cid)
+    
+    _w1.Entry_fullname.delete(0,END)
+    _w1.Entry_fullname.insert(END, fullname)
+    
+    _w1.Entry_dateborrow.delete(0,END)
+    _w1.Entry_dateborrow.insert(END, borrowdate)
+    
+    _w1.Entry_timeborrow.delete(0,END)
+    _w1.Entry_timeborrow.insert(END, borrowtime)
+
+    # for arg in args:
+    #     print ('another arg:', arg)
+    # sys.stdout.flush()
+     
+def saveTransaction(*args):
+    print('GUIcandidatemodify_support.saveTransaction')
+    
+    currentdate = datetime.today()
+    cid = _w1.Entry_cid.get()+'9999'
+    fullname = _w1.Entry_fullname.get()
+    dateborrow =  currentdate.strftime("%d-%b-%Y") 
+    timeborrow = currentdate.strftime("%H:%M")
+    borrowstatus = 1
+    borrowtype = _w1.Entry_tmpvalue.get()
+    # print(borrowtype)
+    try:
+        createdbSqlite()
+        conn = sqlite3.connect('1.db')
+        print("เปิดฐานข้อมูลสำเร็จ")
+        c = conn.cursor()
+        c.execute("INSERT INTO cowbuffborrowing (cid,fullname,dateborrow,timeborrow,borrowstatus,borrowtype) \
+            VALUES (?,?,?,?,?,?);", (cid,fullname,dateborrow,timeborrow,borrowstatus,borrowtype,))
+        conn.commit()  
+        print("สร้างเรคคอร์ด สำเร็จ")     
+        conn.close()
+    except sqlite3.Error as err:
+            print(err)    
+            
+    # for arg in args:
+    #     print ('another arg:', arg)
+    # sys.stdout.flush()
+    
 def deleteTransaction(*args):
     print('GUIcandidatemodify_support.deleteTransaction')
-    for arg in args:
-        print ('another arg:', arg)
-    sys.stdout.flush()
-
-def exitProgram(*args):
-    print('GUIcandidatemodify_support.exitProgram')
-    for arg in args:
-        print ('another arg:', arg)
-    sys.stdout.flush()
-
-def export(*args):
-    print('GUIcandidatemodify_support.export')
-    for arg in args:
-        print ('another arg:', arg)
-    sys.stdout.flush()
-
-def makBuffalotransaction(*args):
-    print('GUIcandidatemodify_support.makBuffalotransaction')
-    for arg in args:
-        print ('another arg:', arg)
-    sys.stdout.flush()
-
+    
+    try:
+        # createdbSqlite()
+        conn = sqlite3.connect('1.db')
+        print("เปิดฐานข้อมูลสำเร็จ")
+        id = 2
+        c = conn.cursor()
+        c.execute("DELETE FROM cowbuffborrowing WHERE id = ?",(id,))
+        conn.commit()  
+        print("ลบเรคคอร์ดสำเร็จ ")   
+        conn.close()
+        bindingTree('BUF')  
+    except sqlite3.Error as err:
+            print(err)  
+            
+    # for arg in args:
+    #     print ('another arg:', arg)
+    # sys.stdout.flush()
+    
+def bindingTree(borrowtype):
+    
+    for item in _w1.Scrolledtreeview_transaction.get_children():
+        _w1.Scrolledtreeview_transaction.delete(item)  
+        
+    if(borrowtype==1):
+        coworbuff='COW'             
+    else:
+        coworbuff='BUF'                     
+    conn = sqlite3.connect("1.db")
+    cur = conn.cursor()
+    cur.execute("SELECT id,cid,fullname,dateborrow,timeborrow,datereturn,timereturn,extrahour,extracharge,borrowstatus FROM cowbuffborrowing WHERE borrowtype = ?",(coworbuff,))
+    rows = cur.fetchall()
+    
+    for row in rows:
+        # print(row) # it print all records in the database
+        _w1.Scrolledtreeview_transaction.insert("", tk.END, values=row)
+    conn.close()
+    
 def makeCowtransaction(*args):
     print('GUIcandidatemodify_support.makeCowtransaction')
+    _w1.Label_transactionitem.config(text = 'รายการ ยืมวัว')
+    _w1.Entry_tmpvalue.delete(0,END)
+    _w1.Entry_tmpvalue.insert(END, 'COW')
+    
+    bindingTree(1)
+    # for arg in args:
+    #     # print ('another arg:', arg)
+    # sys.stdout.flush()
+
+def makeBuffalotran(*args):
+    print('GUIcandidatemodify_support.makeBuffalotran')
+    _w1.Label_transactionitem.config(text = 'รายการ ยืมควาย')
+    _w1.Entry_tmpvalue.delete(0,END)
+    
+    _w1.Entry_tmpvalue.insert(END, 'BUF')
+    
+    bindingTree(2)
+    
+    # for arg in args:
+    #     print ('another arg:', arg)
+    # sys.stdout.flush()
+           
+def calculateExtracharge(*args):
+   
+    print('GUIcandidatemodify_support.calculateExtracharge')
+    # print(_w1.Entry_cid.get())
     for arg in args:
         print ('another arg:', arg)
     sys.stdout.flush()
 
-def onClickBorrowCheckbox(*args):
-    print('GUIcandidatemodify_support.onClickBorrowCheckbox')
-    for arg in args:
-        print ('another arg:', arg)
-    sys.stdout.flush()
+
+
 
 def onClickBuffaloRadio(*args):
     print('GUIcandidatemodify_support.onClickBuffaloRadio')
@@ -74,6 +220,8 @@ def onClickBuffaloRadio(*args):
 
 def onClickCowRadio(*args):
     print('GUIcandidatemodify_support.onClickCowRadio')
+    # print(_w1.Radiobutton_cow.config())
+    
     for arg in args:
         print ('another arg:', arg)
     sys.stdout.flush()
@@ -90,12 +238,6 @@ def saveStatus(*args):
         print ('another arg:', arg)
     sys.stdout.flush()
 
-def saveTransaction(*args):
-    print('GUIcandidatemodify_support.saveTransaction')
-    for arg in args:
-        print ('another arg:', arg)
-    sys.stdout.flush()
-
 def searchTransaction(*args):
     print('GUIcandidatemodify_support.searchTransaction')
     for arg in args:
@@ -104,10 +246,49 @@ def searchTransaction(*args):
 
 def viewTransactionList(*args):
     print('GUIcandidatemodify_support.viewTransactionList')
+    # tv.item(selected, values=(temp[0], temp[1], sal_up))
     for arg in args:
         print ('another arg:', arg)
     sys.stdout.flush()
 
+def onClickRadioBorrow(*args):
+    print('GUIcandidatemodify_support.onClickRadioBorrow')
+    for arg in args:
+        print ('another arg:', arg)
+    sys.stdout.flush()
+
+def onClickRadioReturn(*args):
+    print('GUIcandidatemodify_support.onClickRadioReturn')
+    for arg in args:
+        print ('another arg:', arg)
+    sys.stdout.flush()
+
+    
+def onClickTransactionRow(*args):
+    print('GUIcandidatemodify_support.onClickTransactionRow')
+    # print(_w1.Scrolledtreeview_transaction.selection())
+    curItem = _w1.Scrolledtreeview_transactiont.focus()
+    print(_w1.Scrolledtreeview_transaction.item(curItem))
+    
+def exitProgram(*args):
+    print('GUIcandidatemodify_support.exitProgram')
+    root.destroy()
+    for arg in args:
+        print ('another arg:', arg)
+    sys.stdout.flush()
+
+def export(*args):
+    print('GUIcandidatemodify_support.export')
+    for arg in args:
+        print ('another arg:', arg)
+    sys.stdout.flush()
+
+def onClickBorrowCheckbox(*args):
+    print('GUIcandidatemodify_support.onClickBorrowCheckbox')
+    for arg in args:
+        print ('another arg:', arg)
+    sys.stdout.flush()
+        
 if __name__ == '__main__':
     GUIcandidatemodify.start_up()
 
