@@ -31,12 +31,7 @@ def main(*args):
     global _top1, _w1
     _top1 = root
     _w1 = GUIcandidatemodify.Toplevel1(_top1)
-    # clear radio and checkbox to deselect
-    _w1.Radiobutton_cow.deselect()
-    _w1.Radiobutton_buff.deselect()
-    _w1.Radiobutton_borrow.deselect()
-    _w1.Radiobutton_return.deselect()
-    # end clear radio and checkbox to deselect
+    
     
     #set active date to current date
     todaydate = datetime.today()
@@ -74,10 +69,30 @@ def createdbSqlite(*args):
     conn.close()
 
 
+def doReturn(*args):
+    print('GUIcandidatemodify_support.doReturn')
+    currentdate = datetime.today()
+    datereturn =  currentdate.strftime("%d-%b-%Y") 
+    timereturn = currentdate.strftime("%H:%M")
+    
+    # id = _w1.Entry_tmpid.get()
+          
+    _w1.Entry_dateback.delete(0,END)
+    _w1.Entry_dateback.insert(END, datereturn)
+    
+    _w1.Entry_timeback.delete(0,END)    
+    _w1.Entry_timeback.insert(END, timereturn)
+    
+    
+    
+    # for arg in args:
+    #     print ('another arg:', arg)
+    # sys.stdout.flush()
+    
 def Button_EditClick(*args):
     print('GUIcandidatemodify_support.Button_EditClick')
-    _w1.Entry_tmpvalue.delete(0,END)
-    _w1.Entry_tmpvalue.insert(END, 'EDIT')
+    _w1.Entry_tmpaction.delete(0,END)
+    _w1.Entry_tmpaction.insert(END, 'EDIT')
     
     curItem = _w1.Scrolledtreeview_transaction.focus()
     selectedRow=_w1.Scrolledtreeview_transaction.item(curItem)
@@ -92,7 +107,10 @@ def Button_EditClick(*args):
     fullname = values[2]
     borrowdate = values[3]
     borrowtime = values[4]
-    
+   
+    _w1.Entry_tmpid.delete(0,END)
+    _w1.Entry_tmpid.insert(END, id)
+     
     _w1.Entry_cid.delete(0,END)
     _w1.Entry_cid.insert(END, cid)
     
@@ -109,50 +127,103 @@ def Button_EditClick(*args):
     #     print ('another arg:', arg)
     # sys.stdout.flush()
      
-def saveTransaction(*args):
-    print('GUIcandidatemodify_support.saveTransaction')
+def doTransaction(*args):
+    print('GUIcandidatemodify_support.doTransaction')
     
-    currentdate = datetime.today()
-    cid = _w1.Entry_cid.get()+'9999'
-    fullname = _w1.Entry_fullname.get()
-    dateborrow =  currentdate.strftime("%d-%b-%Y") 
-    timeborrow = currentdate.strftime("%H:%M")
-    borrowstatus = 1
+    
     borrowtype = _w1.Entry_tmpvalue.get()
     # print(borrowtype)
-    try:
-        createdbSqlite()
-        conn = sqlite3.connect('1.db')
-        print("เปิดฐานข้อมูลสำเร็จ")
-        c = conn.cursor()
-        c.execute("INSERT INTO cowbuffborrowing (cid,fullname,dateborrow,timeborrow,borrowstatus,borrowtype) \
-            VALUES (?,?,?,?,?,?);", (cid,fullname,dateborrow,timeborrow,borrowstatus,borrowtype,))
-        conn.commit()  
-        print("สร้างเรคคอร์ด สำเร็จ")     
-        conn.close()
-    except sqlite3.Error as err:
+    if _w1.Entry_tmpaction.get() == 'EDIT':
+        id= _w1.Entry_tmpid.get()
+        cid = _w1.Entry_cid.get()
+        fullname = _w1.Entry_fullname.get()
+        dateborrow =  _w1.Entry_dateborrow.get()
+        timeborrow = _w1.Entry_timeborrow.get()
+        borrowstatus = 1
+        try:
+            createdbSqlite()
+            conn = sqlite3.connect('1.db')
+            print("เปิดฐานข้อมูลสำเร็จ")
+            c = conn.cursor()
+            c.execute("UPDATE cowbuffborrowing SET cid = ?,fullname =? ,dateborrow =? ,timeborrow =?,borrowstatus = ?,borrowtype =?  \
+                WHERE id = ?",(cid,fullname,dateborrow,timeborrow,borrowstatus,borrowtype,id,))
+            conn.commit()  
+            print("แก้ไขข้อมูล สำเร็จ")     
+            conn.close()
+        except sqlite3.Error as err:
+            print(err) 
+    else:
+        currentdate = datetime.today()
+        cid = _w1.Entry_cid.get()+'9999'
+        fullname = _w1.Entry_fullname.get()
+        dateborrow =  currentdate.strftime("%d-%b-%Y") 
+        timeborrow = currentdate.strftime("%H:%M")
+        borrowstatus = 1
+        try:
+            createdbSqlite()
+            conn = sqlite3.connect('1.db')
+            print("เปิดฐานข้อมูลสำเร็จ")
+            c = conn.cursor()
+            c.execute("INSERT INTO cowbuffborrowing (cid,fullname,dateborrow,timeborrow,borrowstatus,borrowtype) \
+                VALUES (?,?,?,?,?,?);", (cid,fullname,dateborrow,timeborrow,borrowstatus,borrowtype,))
+            conn.commit()  
+            print("สร้างเรคคอร์ด สำเร็จ")     
+            conn.close()
+        except sqlite3.Error as err:
             print(err)    
             
+    if _w1.Entry_tmpvalue.get() == 'COW':
+        bindingTree(1)
+    else:
+        bindingTree(2)        
+    
+    clearalldata()        
     # for arg in args:
     #     print ('another arg:', arg)
     # sys.stdout.flush()
     
+def clearalldata():
+    _w1.Entry_tmpaction.delete(0,END)
+    _w1.Entry_tmpaction.insert(END, '')
+    
+    _w1.Entry_tmpid.delete(0,END)
+    _w1.Entry_tmpid.insert(END, '')
+     
+    _w1.Entry_cid.delete(0,END)
+    _w1.Entry_cid.insert(END, '')
+    
+    _w1.Entry_fullname.delete(0,END)
+    _w1.Entry_fullname.insert(END, '')
+    
+    _w1.Entry_dateborrow.delete(0,END)
+    _w1.Entry_dateborrow.insert(END, '')
+    
+    _w1.Entry_timeborrow.delete(0,END)
+    _w1.Entry_timeborrow.insert(END, '')
+        
 def deleteTransaction(*args):
     print('GUIcandidatemodify_support.deleteTransaction')
     
-    try:
-        # createdbSqlite()
-        conn = sqlite3.connect('1.db')
-        print("เปิดฐานข้อมูลสำเร็จ")
-        id = 2
-        c = conn.cursor()
-        c.execute("DELETE FROM cowbuffborrowing WHERE id = ?",(id,))
-        conn.commit()  
-        print("ลบเรคคอร์ดสำเร็จ ")   
-        conn.close()
-        bindingTree('BUF')  
-    except sqlite3.Error as err:
-            print(err)  
+    if _w1.Entry_tmpid.get() != '':
+        try:    
+            conn = sqlite3.connect('1.db')
+            print("เปิดฐานข้อมูลสำเร็จ")
+            id = _w1.Entry_tmpid.get()
+            c = conn.cursor()
+            c.execute("DELETE FROM cowbuffborrowing WHERE id = ?",(id,))
+            conn.commit()  
+            print("ลบเรคคอร์ดสำเร็จ ")   
+            conn.close()
+            
+            if _w1.Entry_tmpvalue.get() == 'COW':
+                bindingTree(1)
+            else:
+                bindingTree(2)  
+             
+        except sqlite3.Error as err:
+            print(err) 
+    else:
+        print('เลือกเรคคอร์ดเสมอ')             
             
     # for arg in args:
     #     print ('another arg:', arg)
@@ -169,7 +240,7 @@ def bindingTree(borrowtype):
         coworbuff='BUF'                     
     conn = sqlite3.connect("1.db")
     cur = conn.cursor()
-    cur.execute("SELECT id,cid,fullname,dateborrow,timeborrow,datereturn,timereturn,extrahour,extracharge,borrowstatus FROM cowbuffborrowing WHERE borrowtype = ?",(coworbuff,))
+    cur.execute("SELECT id,cid,fullname,dateborrow,timeborrow,datereturn,timereturn,borrowtype,extrahour,extracharge,borrowstatus FROM cowbuffborrowing WHERE borrowtype = ?",(coworbuff,))
     rows = cur.fetchall()
     
     for row in rows:
@@ -183,6 +254,13 @@ def makeCowtransaction(*args):
     _w1.Entry_tmpvalue.delete(0,END)
     _w1.Entry_tmpvalue.insert(END, 'COW')
     
+    _w1.Entry_tmpaction.delete(0,END)
+    _w1.Entry_tmpaction.insert(END, '')
+    
+    _w1.Entry_tmpid.delete(0,END)
+    _w1.Entry_tmpid.insert(END, '')
+    
+    
     bindingTree(1)
     # for arg in args:
     #     # print ('another arg:', arg)
@@ -192,8 +270,13 @@ def makeBuffalotran(*args):
     print('GUIcandidatemodify_support.makeBuffalotran')
     _w1.Label_transactionitem.config(text = 'รายการ ยืมควาย')
     _w1.Entry_tmpvalue.delete(0,END)
-    
     _w1.Entry_tmpvalue.insert(END, 'BUF')
+    
+    _w1.Entry_tmpaction.delete(0,END)
+    _w1.Entry_tmpaction.insert(END, '')
+    
+    _w1.Entry_tmpid.delete(0,END)
+    _w1.Entry_tmpid.insert(END, '')
     
     bindingTree(2)
     
@@ -232,11 +315,6 @@ def onClickReturnCheckbox(*args):
         print ('another arg:', arg)
     sys.stdout.flush()
 
-def saveStatus(*args):
-    print('GUIcandidatemodify_support.saveStatus')
-    for arg in args:
-        print ('another arg:', arg)
-    sys.stdout.flush()
 
 def searchTransaction(*args):
     print('GUIcandidatemodify_support.searchTransaction')
