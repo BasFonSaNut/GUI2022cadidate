@@ -440,6 +440,10 @@ def doCancelreturn(*args):
             conn.commit()  
             print("คืนค่าการคืน สำเร็จ")     
             conn.close()
+            if(_w1.Entry_tmpborrowtype.get() == 'COW'):
+                bindingTree(1)
+            else:
+                bindingTree(2)    
         except sqlite3.Error as err:
             print(err)    
    
@@ -447,12 +451,35 @@ def doCancelreturn(*args):
     #     print ('another arg:', arg)
     # sys.stdout.flush()
 
-
 def searchTransaction(*args):
     print('GUIcandidatemodify_support.searchTransaction')
-    for arg in args:
-        print ('another arg:', arg)
-    sys.stdout.flush()
+    searchcid = _w1.Entry_cidsearch.get()
+    borrowtype = _w1.Entry_tmpborrowtype.get()
+    if(borrowtype == ''):
+        tk.messagebox.askquestion(title='Warning', message='โปรดเลือกการทำรายการ วัวหรือควายก่อน ปุ่มด้านขวา')
+    else:
+        for item in _w1.Scrolledtreeview_transaction.get_children():
+            _w1.Scrolledtreeview_transaction.delete(item)  
+        
+        try:            
+            conn = sqlite3.connect("1.db")
+            cur = conn.cursor()
+            cur.execute("SELECT id,cid,fullname,borrowdate,borrowtime,returndate,returntime,borrowtype,borrowhour,payment,borrowstatus FROM borrowcowbuff WHERE borrowtype = ? and cid like ?",(borrowtype,'%'+searchcid+'%',))
+            # cur.execute("SELECT id,cid,fullname,borrowdate,borrowtime,returndate,returntime,borrowtype,borrowhour,payment,borrowstatus FROM borrowcowbuff WHERE borrowtype = '"+borrowtype+"' and cid like '%"+searchcid+"%'")
+            rows = cur.fetchall()
+            
+            for row in rows:
+                # print(row) # it print all records in the database
+                _w1.Scrolledtreeview_transaction.insert("", tk.END, values=row)
+            conn.close()
+        except sqlite3.Error as err:
+            print(err) 
+            
+    
+    # searchTransaction
+    # for arg in args:
+    #     print ('another arg:', arg)
+    # sys.stdout.flush()
 
 def createDb(*args):
     print('GUIcandidatemodify_support.createDb')

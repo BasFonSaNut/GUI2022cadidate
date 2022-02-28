@@ -1,5 +1,8 @@
 from datetime import datetime,timedelta
 from math import ceil
+from unicodedata import decimal
+
+from numpy import real
 
 #Today= datetime.today()
 # date_list = [Today + timedelta(minutes=15*x) for x in range(0, 1000)]
@@ -47,6 +50,21 @@ from math import ceil
 # price = 0
 # price = ((exactlyround * 500)+ (extramin * 100))
 # print(exactlyround,extramin,price)
+# f= float(7.2332)
+# f = str(f)
+# a= f[::-1].find('.')
+# print('how many decimal: ',a)
+
+# f= float(7.32)
+# f = str(f)
+# a= f[::-1].find('.')
+# print('how many decimal: ',a)
+
+#จุดด้วย ทศนิยมลงท้ายด้วย 0 ตัด ว่ะ แก้ จุดนั้นได้ ส่ง code กลับมาด้วยไว้ใช้ต่อ 555
+# f= float(7.30)
+# f = str(f)
+# a= f[::-1].find('.')
+# print('how many decimal: ',a)
 
 
 
