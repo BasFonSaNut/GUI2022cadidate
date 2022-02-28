@@ -509,9 +509,6 @@ def createCsvFile():
     if(borrowtype == ''):
         tk.messagebox.askquestion(title='Warning', message='โปรดเลือกการทำรายการ วัวหรือควายก่อน ปุ่มด้านขวา')
     else:
-        for item in _w1.Scrolledtreeview_transaction.get_children():
-            _w1.Scrolledtreeview_transaction.delete(item)  
-        
         try:            
             conn = sqlite3.connect("1.db")
             cur = conn.cursor()
@@ -519,9 +516,13 @@ def createCsvFile():
             # cur.execute("SELECT id,cid,fullname,borrowdate,borrowtime,returndate,returntime,borrowtype,borrowhour,payment,borrowstatus FROM borrowcowbuff WHERE borrowtype = '"+borrowtype+"' and cid like '%"+searchcid+"%'")
             rows = cur.fetchall()
             
-            for row in rows:
-                # print(row) # it print all records in the database
-                _w1.Scrolledtreeview_transaction.insert("", tk.END, values=row)
+            with open('csv.csv', "w", encoding="utf-8") as file:
+                for row in rows:
+                    textline = str(row[0])+",'"+row[1]+"','"+row[2]+"','"+row[3]+"','"+row[4]+"','"+row[5]+"','"+row[6]+"','"+row[7]+"',"+str(row[8])+","+str(row[9])+",'"+row[10]+"'\n"
+                    file.write(textline)
+                    print(textline) # it print all records in the database
+
+            file.close()    
             conn.close()
         except sqlite3.Error as err:
             print(err) 
@@ -532,19 +533,25 @@ def createJsonFile():
     if(borrowtype == ''):
         tk.messagebox.askquestion(title='Warning', message='โปรดเลือกการทำรายการ วัวหรือควายก่อน ปุ่มด้านขวา')
     else:
-        for item in _w1.Scrolledtreeview_transaction.get_children():
-            _w1.Scrolledtreeview_transaction.delete(item)  
-        
         try:            
             conn = sqlite3.connect("1.db")
             cur = conn.cursor()
             cur.execute("SELECT id,cid,fullname,borrowdate,borrowtime,returndate,returntime,borrowtype,borrowhour,payment,borrowstatus FROM borrowcowbuff WHERE borrowtype = ? and cid like ?",(borrowtype,'%'+searchcid+'%',))
             # cur.execute("SELECT id,cid,fullname,borrowdate,borrowtime,returndate,returntime,borrowtype,borrowhour,payment,borrowstatus FROM borrowcowbuff WHERE borrowtype = '"+borrowtype+"' and cid like '%"+searchcid+"%'")
             rows = cur.fetchall()
-            
-            for row in rows:
-                # print(row) # it print all records in the database
-                _w1.Scrolledtreeview_transaction.insert("", tk.END, values=row)
+            with open('json.json', "w", encoding="utf-8") as file:
+                file.write('[ \n')
+                for row in rows:
+                    textline = '{"id":"'+str(row[0])+'","cid":"'+row[1]+'","fullname":"'+row[2]+'","borrowdate":"' \
+                        +row[3]+'","borrowtime":"'+row[4]+'","returndate":"'+row[5]+'","returntime":"' \
+                        +row[6]+'","borrowtype":"'+row[7]+'","borrowhour":"'+str(row[8])+'","payment":"' \
+                        +str(row[9])+'","borrowstatus":"'+row[10]+'"},\n'
+                    file.write(textline)
+                    print(textline) # it print all records in the database
+                file.write(']')
+            file.close()    
+            conn.close()
+                
             conn.close()
         except sqlite3.Error as err:
             print(err) 
