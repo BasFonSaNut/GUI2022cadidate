@@ -128,8 +128,6 @@ def doReturn(*args):
         _w1.Entry_payment.delete(0,END)
         _w1.Entry_payment.insert(END, Price) 
         
-       
-        
         MsgBox = tk.messagebox.askquestion ('Confirmation','ถ้าเห็นว่ายอดดังกล่าวถูกต้องแล้ว กด  yes ได้เลย',icon = 'warning')
         if MsgBox == 'yes':
             try:
@@ -142,7 +140,7 @@ def doReturn(*args):
                 print("บันทึกการคืน สำเร็จ")     
                 conn.close()
                 
-                if _w1.Button_tmpborrowtype.get() == 'COW':
+                if _w1.Entry_tmpborrowtype.get() == 'COW':
                     bindingTree(1)
                 else:
                     bindingTree(2)        
@@ -182,7 +180,7 @@ def Button_EditClick(*args):
     borrowtype      = values[7]
     borrowhour      = values[8]
     payment         = values[9]
-    borrowstatas    = values[10]
+    borrowstatus    = values[10]
    
     _w1.Entry_tmpid.delete(0,END)
     _w1.Entry_tmpid.insert(END, id)
@@ -205,8 +203,8 @@ def Button_EditClick(*args):
     _w1.Entry_returntime.delete(0,END)
     _w1.Entry_returntime.insert(END, returntime)
     
-    _w1.Button_tmpborrowtype.delete(0,END)
-    _w1.Button_tmpborrowtype.insert(END, borrowtype)
+    _w1.Entry_tmpborrowtype.delete(0,END)
+    _w1.Entry_tmpborrowtype.insert(END, borrowtype)
  
     _w1.Entry_borrowhour.delete(0,END)
     _w1.Entry_borrowhour.insert(END, borrowhour)
@@ -214,7 +212,7 @@ def Button_EditClick(*args):
     _w1.Entry_payment.delete(0,END)
     _w1.Entry_payment.insert(END, payment)
     
-    if(borrowstatas =='ยืม'):
+    if(borrowstatus =='ยืม'):
         borrowstatasTxt ='borrow'
     else:
         borrowstatasTxt ='return' 
@@ -229,14 +227,14 @@ def Button_EditClick(*args):
      
 def doTransaction(*args):
     print('GUIcandidatemodify_support.doTransaction')
-    borrowtype = _w1.Button_tmpborrowtype.get()
+    borrowtype = _w1.Entry_tmpborrowtype.get()
     borrowstatus = _w1.Entry_tmpborrowstatus.get()
     borrowstatusTxt = ''
     
-    if(borrowstatus =='borrow'):
-        borrowstatasTxt ='ยืม'
+    if(borrowstatus =='borrow' or borrowstatus ==''):
+        borrowstatusTxt ='ยืม'
     else:
-        borrowstatasTxt ='คืน' 
+        borrowstatusTxt ='คืน' 
     
     
         
@@ -283,14 +281,14 @@ def doTransaction(*args):
                 print("ติดต่อฐานข้อมูลสำเร็จ")
                 c = conn.cursor()
                 c.execute("INSERT INTO borrowcowbuff (cid,fullname,borrowdate,borrowtime,borrowstatus,borrowtype) \
-                    VALUES (?,?,?,?,?,?);", (cid,fullname,borrowdate,borrowtime,borrowstatusTxt,borrowtype,))
+                    VALUES (?,?,?,?,?,?);", (cid,fullname,borrowdate,borrowtime,'ยืม',borrowtype,))
                 conn.commit()  
                 print("สร้างเรคคอร์ด สำเร็จ")     
                 conn.close()
             except sqlite3.Error as err:
                 print(err)    
                 
-        if _w1.Button_tmpborrowtype.get() == 'COW':
+        if _w1.Entry_tmpborrowtype.get() == 'COW':
             bindingTree(1)
         else:
             bindingTree(2)        
@@ -342,7 +340,7 @@ def deleteTransaction(*args):
             print("ลบเรคคอร์ดสำเร็จ ")   
             conn.close()
             
-            if _w1.Button_tmpborrowtype.get() == 'COW':
+            if _w1.Entry_tmpborrowtype.get() == 'COW':
                 bindingTree(1)
             else:
                 bindingTree(2)  
@@ -386,8 +384,8 @@ def setCurrentValue():
 def makeCowtransaction(*args):
     print('GUIcandidatemodify_support.makeCowtransaction')
     _w1.Label_transactionitem.config(text = 'รายการ ยืมวัว')
-    _w1.Button_tmpborrowtype.delete(0,END)
-    _w1.Button_tmpborrowtype.insert(END, 'COW')
+    _w1.Entry_tmpborrowtype.delete(0,END)
+    _w1.Entry_tmpborrowtype.insert(END, 'COW')
     
     _w1.Entry_tmpaction.delete(0,END)
     _w1.Entry_tmpaction.insert(END, '')
@@ -409,8 +407,8 @@ def makeBuffalotran(*args):
     print('GUIcandidatemodify_support.makeBuffalotran')
     
     _w1.Label_transactionitem.config(text = 'รายการ ยืมควาย')
-    _w1.Button_tmpborrowtype.delete(0,END)
-    _w1.Button_tmpborrowtype.insert(END, 'BUF')
+    _w1.Entry_tmpborrowtype.delete(0,END)
+    _w1.Entry_tmpborrowtype.insert(END, 'BUF')
     
     _w1.Entry_tmpaction.delete(0,END)
     _w1.Entry_tmpaction.insert(END, '')
@@ -428,11 +426,22 @@ def makeBuffalotran(*args):
     # sys.stdout.flush()
            
 def doCancelreturn(*args):
-    print('GUIcandidatemodify_support.calculatePayment')
+    print('GUIcandidatemodify_support.doCancelreturn')
     if(_w1.Entry_tmpid.get() ==''):
         tk.messagebox.askquestion(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
     else:    
-        print('do something')
+        try:
+            id = _w1.Entry_tmpid.get()
+            conn = sqlite3.connect('1.db')
+            print("ติดต่อฐานข้อมูลสำเร็จ")
+            c = conn.cursor()
+            c.execute("UPDATE borrowcowbuff SET returndate=?,returntime=?,borrowhour=?, \
+                payment=?,borrowstatus=? WHERE id = ?",('','',0,0.00,'ยืม',id,))
+            conn.commit()  
+            print("คืนค่าการคืน สำเร็จ")     
+            conn.close()
+        except sqlite3.Error as err:
+            print(err)    
    
     # for arg in args:
     #     print ('another arg:', arg)

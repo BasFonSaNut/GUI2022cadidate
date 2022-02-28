@@ -35,21 +35,23 @@ from math import ceil
 # print(diff_in_hours)
 
 # 17
-borrowhour =  17
-exactlyround = int((borrowhour / 5))
-extramin = ceil(borrowhour-(5*exactlyround))
+# borrowhour =  17
+# exactlyround = int((borrowhour / 5))
+# extramin = ceil(borrowhour-(5*exactlyround))
 
-if(exactlyround<1):
-    exactlyround:1
-else:
-    exactlyround = exactlyround
+# if(exactlyround<1):
+#     exactlyround:1
+# else:
+#     exactlyround = exactlyround
 
-price = 0
-price = ((exactlyround * 500)+ (extramin * 100))
-print(exactlyround,extramin,price)
+# price = 0
+# price = ((exactlyround * 500)+ (extramin * 100))
+# print(exactlyround,extramin,price)
 
 
-        
+
+
+     
     
 
 

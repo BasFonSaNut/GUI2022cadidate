@@ -754,14 +754,14 @@ class Toplevel1:
         self.Button_Edit.configure(pady="0")
         self.Button_Edit.configure(text='''แก้ไข''')
 
-        self.Button_tmpborrowtype = tk.Entry(self.Frame3)
-        self.Button_tmpborrowtype.place(relx=0.790, rely=0.832, height=20
+        self.Entry_tmpborrowtype = tk.Entry(self.Frame3)
+        self.Entry_tmpborrowtype.place(relx=0.790, rely=0.832, height=20
                 , relwidth=0.60)
-        self.Button_tmpborrowtype.configure(background="white")
-        self.Button_tmpborrowtype.configure(disabledforeground="#a3a3a3")
-        self.Button_tmpborrowtype.configure(font="TkFixedFont")
-        self.Button_tmpborrowtype.configure(foreground="#000000")
-        self.Button_tmpborrowtype.configure(insertbackground="black")
+        self.Entry_tmpborrowtype.configure(background="white")
+        self.Entry_tmpborrowtype.configure(disabledforeground="#a3a3a3")
+        self.Entry_tmpborrowtype.configure(font="TkFixedFont")
+        self.Entry_tmpborrowtype.configure(foreground="#000000")
+        self.Entry_tmpborrowtype.configure(insertbackground="black")
         
         self.Entry_tmpaction = tk.Entry(self.Frame3)
         self.Entry_tmpaction.place(relx=0.890, rely=0.832, height=20
