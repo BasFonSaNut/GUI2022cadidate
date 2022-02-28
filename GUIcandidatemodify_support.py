@@ -235,8 +235,6 @@ def doTransaction(*args):
         borrowstatusTxt ='ยืม'
     else:
         borrowstatusTxt ='คืน' 
-    
-    
         
     # print(borrowtype)
     if _w1.Entry_tmpaction.get() == 'EDIT':
@@ -301,6 +299,7 @@ def doTransaction(*args):
 
     
 def clearalldata():
+    print('GUIcandidatemodify_support.clearalldata')
     _w1.Entry_tmpaction.delete(0,END)
     _w1.Entry_tmpaction.insert(END, '')
     
@@ -354,6 +353,7 @@ def deleteTransaction(*args):
     # sys.stdout.flush()
     
 def bindingTree(borrowtype):
+    print('GUIcandidatemodify_support.bindingTree')
     clearalldata()  
     for item in _w1.Scrolledtreeview_transaction.get_children():
         _w1.Scrolledtreeview_transaction.delete(item)  
@@ -374,6 +374,7 @@ def bindingTree(borrowtype):
     conn.close()
 
 def setCurrentValue():
+    print('GUIcandidatemodify_support.setCurrentValue')
     todaydate = datetime.today()
     _w1.Entry_borrowdate.delete(0,END)
     _w1.Entry_borrowdate.insert(END,todaydate.strftime("%d-%b-%Y"))
@@ -403,7 +404,6 @@ def makeCowtransaction(*args):
     # sys.stdout.flush()
 
 def makeBuffalotran(*args):
-   
     print('GUIcandidatemodify_support.makeBuffalotran')
     
     _w1.Label_transactionitem.config(text = 'รายการ ยืมควาย')
@@ -484,7 +484,7 @@ def searchTransaction(*args):
 def createDb(*args):
     print('GUIcandidatemodify_support.createDb')
     createdbSqlite()
-    # tv.item(selected, values=(temp[0], temp[1], sal_up))
+   
     # for arg in args:
     #     print ('another arg:', arg)
     # sys.stdout.flush()
@@ -493,8 +493,8 @@ def createDb(*args):
 def onClickTransactionRow(*args):
     print('GUIcandidatemodify_support.onClickTransactionRow')
     # print(_w1.Scrolledtreeview_transaction.selection())
-    curItem = _w1.Scrolledtreeview_transactiont.focus()
-    print(_w1.Scrolledtreeview_transaction.item(curItem))
+    # curItem = _w1.Scrolledtreeview_transactiont.focus()
+    # print(_w1.Scrolledtreeview_transaction.item(curItem))
     
 def exitProgram(*args):
     print('GUIcandidatemodify_support.exitProgram')
@@ -504,6 +504,7 @@ def exitProgram(*args):
     sys.stdout.flush()
 
 def createCsvFile():
+    print('GUIcandidatemodify_support.createCsvFile')
     searchcid = _w1.Entry_cidsearch.get()
     borrowtype = _w1.Entry_tmpborrowtype.get()
     if(borrowtype == ''):
@@ -524,10 +525,12 @@ def createCsvFile():
 
             file.close()    
             conn.close()
+            print("Generate CSV complete")
         except sqlite3.Error as err:
             print(err) 
             
-def createJsonFile():    
+def createJsonFile(): 
+    print('GUIcandidatemodify_support.createJsonFile')   
     searchcid = _w1.Entry_cidsearch.get()
     borrowtype = _w1.Entry_tmpborrowtype.get()
     if(borrowtype == ''):
@@ -552,7 +555,7 @@ def createJsonFile():
             file.close()    
             conn.close()
                 
-            conn.close()
+            print("Generate Json complete")
         except sqlite3.Error as err:
             print(err) 
             
