@@ -614,7 +614,7 @@ class Toplevel1:
         self.Radiobutton_exportchoice.configure(justify='left')
         self.Radiobutton_exportchoice.configure(text='''CSV''')
         self.Radiobutton_exportchoice.configure(variable=self.selectedButton)
-        self.Radiobutton_exportchoice.configure(value='''1''')
+        self.Radiobutton_exportchoice.configure(value=1)
         
         self.Radiobutton_exportchoice = tk.Radiobutton(self.Frame4)
         self.Radiobutton_exportchoice.place(relx=0.57, rely=0.786, relheight=0.084
@@ -631,7 +631,7 @@ class Toplevel1:
         self.Radiobutton_exportchoice.configure(highlightcolor="black")
         self.Radiobutton_exportchoice.configure(justify='left')
         self.Radiobutton_exportchoice.configure(text='''JSON''')
-        self.Radiobutton_exportchoice.configure(value='''2''')
+        self.Radiobutton_exportchoice.configure(value=2)
         self.Radiobutton_exportchoice.configure(variable=self.selectedButton)
         
         # self.Radiobutton_json_choice = tk.Radiobutton(self.Frame4)
