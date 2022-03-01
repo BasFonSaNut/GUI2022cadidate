@@ -321,9 +321,6 @@ def clearalldata():
     
     _w1.Entry_tmpborrowstatus.delete(0,END)
     _w1.Entry_tmpborrowstatus.insert(END, 'borrow')
-    
-    
-    
         
 def deleteTransaction(*args):
     print('GUIcandidatemodify_support.deleteTransaction')
