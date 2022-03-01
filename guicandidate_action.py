@@ -59,9 +59,8 @@ def createdbSqlite(*args):
         borrowstatus    CHAR(50));''')
     
     conn.commit()  
-    print("สร้างตารางสำเร็จ")     
     conn.close()
-
+    tk.messagebox.askquestion(title='Information', message='สร้างตารางสำเร็จ')
 
 def calculatePayment():
     if(_w1.Entry_tmpid.get() ==''):
@@ -129,9 +128,8 @@ def doReturn(*args):
                 c.execute("UPDATE borrowcowbuff SET returndate =?, returntime =?, borrowhour=?, payment=?, borrowstatus = ?  \
                     WHERE id = ?",(returndate,returntime,borrowHour,Price,borrowstatusTxt,id,))
                 conn.commit()  
-                print("บันทึกการคืน สำเร็จ")     
                 conn.close()
-                
+                tk.messagebox.askquestion(title='Information', message='บันทึกการคืน สำเร็จ')
                 if _w1.Entry_tmpborrowtype.get() == 'COW':
                     bindingTree(1)
                 else:
@@ -144,7 +142,7 @@ def doReturn(*args):
             except sqlite3.Error as err:
                 print(err) 
         else:
-            tk.messagebox.showinfo('Return','You will now return to the application screen')
+            tk.messagebox.showinfo('Information','เมื่อไม่เลือกดำเนินการ ระบบจะนำกลับสู่หน้าจอปกติ')
         
         
         
@@ -252,8 +250,8 @@ def doTransaction(*args):
                     returndate=?,returntime=?,borrowhour=?,payment=?,borrowstatus = ?,borrowtype =?  \
                     WHERE id = ?",(cid,fullname,borrowdate,borrowtime,returndate,returntime,borrowhour,payment,borrowstatusTxt,borrowtype,id,))
                 conn.commit()  
-                print("แก้ไขข้อมูล สำเร็จ")     
                 conn.close()
+                tk.messagebox.askquestion(title='Information', message='แก้ไขสำเร็จ')
             except sqlite3.Error as err:
                 print(err) 
     else:
@@ -273,8 +271,8 @@ def doTransaction(*args):
                 c.execute("INSERT INTO borrowcowbuff (cid,fullname,borrowdate,borrowtime,borrowstatus,borrowtype) \
                     VALUES (?,?,?,?,?,?);", (cid,fullname,borrowdate,borrowtime,'ยืม',borrowtype,))
                 conn.commit()  
-                print("สร้างเรคคอร์ด สำเร็จ")     
                 conn.close()
+                tk.messagebox.askquestion(title='Information', message='สร้างเรคคอร์ด สำเร็จ')
             except sqlite3.Error as err:
                 print(err)    
                 
@@ -327,9 +325,8 @@ def deleteTransaction(*args):
             c = conn.cursor()
             c.execute("DELETE FROM borrowcowbuff WHERE id = ?",(id,))
             conn.commit()  
-            print("ลบเรคคอร์ดสำเร็จ ")   
             conn.close()
-            
+            tk.messagebox.askquestion(title='Information', message='ลบเรคคอร์ด สำเร็จ')
             if _w1.Entry_tmpborrowtype.get() == 'COW':
                 bindingTree(1)
             else:
@@ -429,12 +426,15 @@ def doCancelreturn(*args):
             c.execute("UPDATE borrowcowbuff SET returndate=?,returntime=?,borrowhour=?, \
                 payment=?,borrowstatus=? WHERE id = ?",('','',0,0.00,'ยืม',id,))
             conn.commit()  
-            print("คืนค่าการคืน สำเร็จ")     
             conn.close()
+            tk.messagebox.askquestion(title='Information', message='คืนค่า เป็นยืม สำเร็จ')
             if(_w1.Entry_tmpborrowtype.get() == 'COW'):
                 bindingTree(1)
             else:
-                bindingTree(2)    
+                bindingTree(2)
+            _w1.Entry_tmpborrowstatus.delete(0,END)
+            _w1.Entry_tmpborrowstatus.insert(END, 'borrow')    
+            
         except sqlite3.Error as err:
             print(err)    
    
@@ -514,7 +514,7 @@ def createCsvFile():
 
             file.close()    
             conn.close()
-            print("Generate CSV complete")
+            tk.messagebox.askquestion(title='Information', message='สร้างไฟล์ CSV.csv สำเร็จ')
         except sqlite3.Error as err:
             print(err) 
             
@@ -539,12 +539,11 @@ def createJsonFile():
                         +row[6]+'","borrowtype":"'+row[7]+'","borrowhour":"'+str(row[8])+'","payment":"' \
                         +str(row[9])+'","borrowstatus":"'+row[10]+'"},\n'
                     file.write(textline)
-                    print(textline) # it print all records in the database
+                    # print(textline) # it print all records in the database
                 file.write(']')
             file.close()    
             conn.close()
-                
-            print("Generate Json complete")
+            tk.messagebox.askquestion(title='Information', message='สร้างไฟล์ Json.json สำเร็จ')    
         except sqlite3.Error as err:
             print(err) 
             
@@ -556,9 +555,9 @@ def export(*args):
     else:
         createJsonFile()
                 
-    for arg in args:
-        print ('another arg:', arg)
-    sys.stdout.flush()
+    # for arg in args:
+    #     print ('another arg:', arg)
+    # sys.stdout.flush()
         
 if __name__ == '__main__':
     guicandidate.start_up()
