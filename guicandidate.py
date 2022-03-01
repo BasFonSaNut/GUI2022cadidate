@@ -755,38 +755,42 @@ class Toplevel1:
         self.Entry_tmpborrowtype = tk.Entry(self.Frame3)
         self.Entry_tmpborrowtype.place(relx=0.790, rely=0.832, height=20
                 , relwidth=0.60)
-        self.Entry_tmpborrowtype.configure(background="white")
-        self.Entry_tmpborrowtype.configure(disabledforeground="#a3a3a3")
+        self.Entry_tmpborrowtype.configure(background="#d9d9d9")
+        self.Entry_tmpborrowtype.configure(disabledforeground="#d9d9d9")
         self.Entry_tmpborrowtype.configure(font="TkFixedFont")
-        self.Entry_tmpborrowtype.configure(foreground="#000000")
-        self.Entry_tmpborrowtype.configure(insertbackground="black")
+        self.Entry_tmpborrowtype.configure(foreground="#d9d9d9")
+        self.Entry_tmpborrowtype.configure(insertbackground="#d9d9d9")
+        self.Entry_tmpborrowtype.configure(relief="flat")
         
         self.Entry_tmpaction = tk.Entry(self.Frame3)
         self.Entry_tmpaction.place(relx=0.890, rely=0.832, height=20
                 , relwidth=0.50)
-        self.Entry_tmpaction.configure(background="white")
-        self.Entry_tmpaction.configure(disabledforeground="#a3a3a3")
+        self.Entry_tmpaction.configure(background="#d9d9d9")
+        self.Entry_tmpaction.configure(disabledforeground="#d9d9d9")
         self.Entry_tmpaction.configure(font="TkFixedFont")
-        self.Entry_tmpaction.configure(foreground="#000000")
-        self.Entry_tmpaction.configure(insertbackground="black")
+        self.Entry_tmpaction.configure(foreground="#d9d9d9")
+        self.Entry_tmpaction.configure(insertbackground="#d9d9d9")
+        self.Entry_tmpaction.configure(relief="flat")
         
         self.Entry_tmpid = tk.Entry(self.Frame3)
         self.Entry_tmpid.place(relx=0.790, rely=0.932, height=20
                 , relwidth=0.50)
-        self.Entry_tmpid.configure(background="white")
-        self.Entry_tmpid.configure(disabledforeground="#a3a3a3")
+        self.Entry_tmpid.configure(background="#d9d9d9")
+        self.Entry_tmpid.configure(disabledforeground="#d9d9d9")
         self.Entry_tmpid.configure(font="TkFixedFont")
-        self.Entry_tmpid.configure(foreground="#000000")
-        self.Entry_tmpid.configure(insertbackground="black")
+        self.Entry_tmpid.configure(foreground="#d9d9d9")
+        self.Entry_tmpid.configure(insertbackground="#d9d9d9")
+        self.Entry_tmpid.configure(relief="flat")
 
         self.Entry_tmpborrowstatus = tk.Entry(self.Frame3)
         self.Entry_tmpborrowstatus.place(relx=0.890, rely=0.932, height=20
                 , relwidth=0.50)
-        self.Entry_tmpborrowstatus.configure(background="white")
-        self.Entry_tmpborrowstatus.configure(disabledforeground="#a3a3a3")
+        self.Entry_tmpborrowstatus.configure(background="#d9d9d9")
+        self.Entry_tmpborrowstatus.configure(disabledforeground="#d9d9d9")
         self.Entry_tmpborrowstatus.configure(font="TkFixedFont")
-        self.Entry_tmpborrowstatus.configure(foreground="#000000")
-        self.Entry_tmpborrowstatus.configure(insertbackground="black")
+        self.Entry_tmpborrowstatus.configure(foreground="#d9d9d9")
+        self.Entry_tmpborrowstatus.configure(insertbackground="#d9d9d9")
+        self.Entry_tmpborrowstatus.configure(relief="flat")
         
         self.Label_candidateInfo = tk.Label(self.top)
         self.Label_candidateInfo.place(relx=0.017, rely=0.951, height=21
@@ -834,6 +838,7 @@ class Toplevel1:
         self.Label_transactionitem_1.configure(relief="ridge")
         self.Label_transactionitem_1.configure(text='''โปรแกรมยืมคืน ไอ้โค ไอ้บือ''')
 
+        
 # The following code is added to facilitate the Scrolled widgets you specified.
 class AutoScroll(object):
     '''Configure the scrollbars for a widget.'''

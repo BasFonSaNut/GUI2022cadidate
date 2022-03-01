@@ -33,8 +33,14 @@ def main(*args):
     _w1.Entry_borrowdate.insert(END,todaydate.strftime("%d-%b-%Y"))
     _w1.Entry_borrowtime.insert(END, todaydate.strftime("%H:%M"))
     
+    #set hide some temporary control didn't work
+    # _w1.Entry_tmpborrowstatus.pack_forget()
+    # _w1.Entry_tmpaction.pack_forget()
+    # _w1.Entry_tmpborrowtype.pack_forget()
+    # _w1.Entry_tmpid.pack_forget()
+    
     # _w1.Scrolledtreeview_transaction.config(selectmode="none")
-    #end set active date to current date
+    
     
     root.mainloop()
     
@@ -276,12 +282,12 @@ def doTransaction(*args):
             except sqlite3.Error as err:
                 print(err)    
                 
-        if _w1.Entry_tmpborrowtype.get() == 'COW':
-            bindingTree(1)
-        else:
-            bindingTree(2)        
-        
-        clearalldata()        
+    if _w1.Entry_tmpborrowtype.get() == 'COW':
+        bindingTree(1)
+    else:
+        bindingTree(2)        
+    
+    clearalldata()        
     # for arg in args:
     #     print ('another arg:', arg)
     # sys.stdout.flush()
@@ -312,6 +318,12 @@ def clearalldata():
     
     _w1.Entry_payment.delete(0,END)
     _w1.Entry_payment.insert(END, '')
+    
+    _w1.Entry_tmpborrowstatus.delete(0,END)
+    _w1.Entry_tmpborrowstatus.insert(END, 'borrow')
+    
+    
+    
         
 def deleteTransaction(*args):
     print('GUIcandidatemodify_support.deleteTransaction')
