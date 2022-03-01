@@ -1,5 +1,5 @@
 # GUI2022cadidate
-- design หน้าตา tkinter GUI สำหรับเข้่าประกวดชิงรางวัล GUI 2022 Bootcamp ของคุณลุงวิศวะ
+- โปรเจค การยืมคืน ไอ้โค ไอ้บือ สำหรับเข้าประกวดชิงรางวัล GUI 2022 Bootcamp ของคุณลุงวิศวะ
 - ประกอบด้วยสองไฟล์ : 2 ไฟล์ code, 1 folder(image folder) , 1 file image ภาพ captue หน้าจอ ที่ยังไม่ได้ลง code (ไฟล์อื่นๆ ไม่จำเป็น ระบบสร้างให้เองผ่านโปรแกรม)
 - รันด้วย python guicandidate.py
 - software design เป็นลักษณะ frontend กับ backend เพื่อง่ายในการแบ่งงานกันทำ และง่ายในการ integrate source code
