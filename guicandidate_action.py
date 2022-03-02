@@ -46,7 +46,7 @@ def main(*args):
     
 
 def createdbSqlite(*args):
-    print('GUIcandidatemodify_support.createdbSqlite')   
+    print('guicandidate_action.createdbSqlite')   
     conn = sqlite3.connect('1.db')
     print("เปิดฐานข้อมูลสำเร็จ")
     
@@ -100,7 +100,7 @@ def calculatePayment():
         return (borrowhour,price)
     
 def doReturn(*args):
-    print('GUIcandidatemodify_support.doReturn')
+    print('guicandidate_action.doReturn')
     id = _w1.Entry_tmpid.get()
     borrowstatusTxt ='คืน'
     if(_w1.Entry_tmpid.get() ==''):
@@ -154,7 +154,7 @@ def doReturn(*args):
         
     
 def Button_EditClick(*args):
-    print('GUIcandidatemodify_support.Button_EditClick')
+    print('guicandidate_action.Button_EditClick')
     _w1.Entry_tmpaction.delete(0,END)
     _w1.Entry_tmpaction.insert(END, 'EDIT')
     
@@ -222,7 +222,7 @@ def Button_EditClick(*args):
     # sys.stdout.flush()
      
 def doTransaction(*args):
-    print('GUIcandidatemodify_support.doTransaction')
+    print('guicandidate_action.doTransaction')
     borrowtype = _w1.Entry_tmpborrowtype.get()
     borrowstatus = _w1.Entry_tmpborrowstatus.get()
     borrowstatusTxt = ''
@@ -294,7 +294,7 @@ def doTransaction(*args):
 
     
 def clearalldata():
-    print('GUIcandidatemodify_support.clearalldata')
+    print('guicandidate_action.clearalldata')
     _w1.Entry_tmpaction.delete(0,END)
     _w1.Entry_tmpaction.insert(END, '')
     
@@ -323,7 +323,7 @@ def clearalldata():
     _w1.Entry_tmpborrowstatus.insert(END, 'borrow')
         
 def deleteTransaction(*args):
-    print('GUIcandidatemodify_support.deleteTransaction')
+    print('guicandidate_action.deleteTransaction')
     if(_w1.Entry_tmpid.get() ==''):
         tk.messagebox.askquestion(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
     else:    
@@ -350,7 +350,7 @@ def deleteTransaction(*args):
     # sys.stdout.flush()
     
 def bindingTree(borrowtype):
-    print('GUIcandidatemodify_support.bindingTree')
+    print('guicandidate_action.bindingTree')
     clearalldata()  
     for item in _w1.Scrolledtreeview_transaction.get_children():
         _w1.Scrolledtreeview_transaction.delete(item)  
@@ -371,7 +371,7 @@ def bindingTree(borrowtype):
     conn.close()
 
 def setCurrentValue():
-    print('GUIcandidatemodify_support.setCurrentValue')
+    print('guicandidate_action.setCurrentValue')
     todaydate = datetime.today()
     _w1.Entry_borrowdate.delete(0,END)
     _w1.Entry_borrowdate.insert(END,todaydate.strftime("%d-%b-%Y"))
@@ -380,7 +380,7 @@ def setCurrentValue():
     _w1.Entry_borrowtime.insert(END, todaydate.strftime("%H:%M"))    
     
 def makeCowtransaction(*args):
-    print('GUIcandidatemodify_support.makeCowtransaction')
+    print('guicandidate_action.makeCowtransaction')
     _w1.Label_transactionitem.config(text = 'รายการ ยืมวัว')
     _w1.Entry_tmpborrowtype.delete(0,END)
     _w1.Entry_tmpborrowtype.insert(END, 'COW')
@@ -401,7 +401,7 @@ def makeCowtransaction(*args):
     # sys.stdout.flush()
 
 def makeBuffalotran(*args):
-    print('GUIcandidatemodify_support.makeBuffalotran')
+    print('guicandidate_action.makeBuffalotran')
     
     _w1.Label_transactionitem.config(text = 'รายการ ยืมควาย')
     _w1.Entry_tmpborrowtype.delete(0,END)
@@ -423,7 +423,7 @@ def makeBuffalotran(*args):
     # sys.stdout.flush()
            
 def doCancelreturn(*args):
-    print('GUIcandidatemodify_support.doCancelreturn')
+    print('guicandidate_action.doCancelreturn')
     if(_w1.Entry_tmpid.get() ==''):
         tk.messagebox.askquestion(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
     else:    
@@ -452,7 +452,7 @@ def doCancelreturn(*args):
     # sys.stdout.flush()
 
 def searchTransaction(*args):
-    print('GUIcandidatemodify_support.searchTransaction')
+    print('guicandidate_action.searchTransaction')
     searchcid = _w1.Entry_cidsearch.get()
     borrowtype = _w1.Entry_tmpborrowtype.get()
     if(borrowtype == ''):
@@ -480,7 +480,7 @@ def searchTransaction(*args):
     # sys.stdout.flush()
 
 def createDb(*args):
-    print('GUIcandidatemodify_support.createDb')
+    print('guicandidate_action.createDb')
     createdbSqlite()
    
     # for arg in args:
@@ -489,20 +489,20 @@ def createDb(*args):
 
     
 def onClickTransactionRow(*args):
-    print('GUIcandidatemodify_support.onClickTransactionRow')
+    print('guicandidate_action.onClickTransactionRow')
     # print(_w1.Scrolledtreeview_transaction.selection())
     # curItem = _w1.Scrolledtreeview_transactiont.focus()
     # print(_w1.Scrolledtreeview_transaction.item(curItem))
     
 def exitProgram(*args):
-    print('GUIcandidatemodify_support.exitProgram')
+    print('guicandidate_action.exitProgram')
     root.destroy()
     for arg in args:
         print ('another arg:', arg)
     sys.stdout.flush()
 
 def createCsvFile():
-    print('GUIcandidatemodify_support.createCsvFile')
+    print('guicandidate_action.createCsvFile')
     searchcid = _w1.Entry_cidsearch.get()
     borrowtype = _w1.Entry_tmpborrowtype.get()
     if(borrowtype == ''):
@@ -528,7 +528,7 @@ def createCsvFile():
             print(err) 
             
 def createJsonFile(): 
-    print('GUIcandidatemodify_support.createJsonFile')   
+    print('guicandidate_action.createJsonFile')   
     searchcid = _w1.Entry_cidsearch.get()
     borrowtype = _w1.Entry_tmpborrowtype.get()
     if(borrowtype == ''):
@@ -557,7 +557,7 @@ def createJsonFile():
             print(err) 
             
 def export(*args):
-    print('GUIcandidatemodify_support.export')
+    print('guicandidate_action.export')
     
     if(_w1.selectedButton.get()==1):
         createCsvFile()
