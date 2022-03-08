@@ -952,7 +952,3 @@ def start_up():
 
 if __name__ == '__main__':
     guicandidate_action.main()
-
-
-
-

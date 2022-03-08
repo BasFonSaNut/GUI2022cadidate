@@ -57,8 +57,8 @@ def createdbSqlite(*args):
         fullname      TEXT    NOT NULL,
         borrowdate      CHAR(50)    NOT NULL,
         borrowtime      CHAR(50)    NOT NULL,
-        returndate      CHAR(50),
-        returntime      CHAR(50),
+        returndate      CHAR(50)    DEFAULT '',
+        returntime      CHAR(50)    DEFAULT '',
         borrowtype      CHAR(10),
         borrowhour      INTEGER     DEFAULT 0,
         payment         REAL        DEFAULT 0,
@@ -66,11 +66,11 @@ def createdbSqlite(*args):
     
     conn.commit()  
     conn.close()
-    tk.messagebox.askquestion(title='Information', message='สร้างตารางสำเร็จ')
+    tk.messagebox.showinfo(title='Information', message='สร้างตารางสำเร็จ')
 
 def calculatePayment():
     if(_w1.Entry_tmpid.get() ==''):
-        tk.messagebox.askquestion(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
+        tk.messagebox.showinfo(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
     else:    
         date_1 = _w1.Entry_borrowdate.get()+' '+_w1.Entry_borrowtime.get()
         date_2 = _w1.Entry_returndate.get()+' '+_w1.Entry_returntime.get()
@@ -104,7 +104,7 @@ def doReturn(*args):
     id = _w1.Entry_tmpid.get()
     borrowstatusTxt ='คืน'
     if(_w1.Entry_tmpid.get() ==''):
-        tk.messagebox.askquestion(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
+        tk.messagebox.showinfo(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
     else:
         _w1.Entry_tmpborrowstatus.delete(0,END)
         _w1.Entry_tmpborrowstatus.insert(END, 'return')
@@ -135,7 +135,7 @@ def doReturn(*args):
                     WHERE id = ?",(returndate,returntime,borrowHour,Price,borrowstatusTxt,id,))
                 conn.commit()  
                 conn.close()
-                tk.messagebox.askquestion(title='Information', message='บันทึกการคืน สำเร็จ')
+                tk.messagebox.showinfo(title='Information', message='บันทึกการคืน สำเร็จ')
                 if _w1.Entry_tmpborrowtype.get() == 'COW':
                     bindingTree(1)
                 else:
@@ -246,7 +246,7 @@ def doTransaction(*args):
         borrowhour  = _w1.Entry_borrowhour.get()
         payment     = _w1.Entry_payment.get()
         if(_w1.Entry_tmpid.get() ==''):
-            tk.messagebox.askquestion(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
+            tk.messagebox.showinfo(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
         else:
             try:
                 conn = sqlite3.connect('1.db')
@@ -257,7 +257,7 @@ def doTransaction(*args):
                     WHERE id = ?",(cid,fullname,borrowdate,borrowtime,returndate,returntime,borrowhour,payment,borrowstatusTxt,borrowtype,id,))
                 conn.commit()  
                 conn.close()
-                tk.messagebox.askquestion(title='Information', message='แก้ไขสำเร็จ')
+                tk.messagebox.showinfo(title='Information', message='แก้ไขสำเร็จ')
             except sqlite3.Error as err:
                 print(err) 
     else:
@@ -268,7 +268,7 @@ def doTransaction(*args):
         borrowtime = currentdate.strftime("%H:%M")
         
         if(_w1.Entry_cid.get() =='' and _w1.Entry_fullname.get() == ''):
-            tk.messagebox.askquestion(title='Warning', message='เลขที่บัตรประชาชน 9 หลักแรก และชื่อ ต้องมี')
+            tk.messagebox.showinfo(title='Warning', message='เลขที่บัตรประชาชน 9 หลักแรก และชื่อ ต้องมี')
         else:   
             try:
                 conn = sqlite3.connect('1.db')
@@ -278,7 +278,7 @@ def doTransaction(*args):
                     VALUES (?,?,?,?,?,?);", (cid,fullname,borrowdate,borrowtime,'ยืม',borrowtype,))
                 conn.commit()  
                 conn.close()
-                tk.messagebox.askquestion(title='Information', message='สร้างเรคคอร์ด สำเร็จ')
+                tk.messagebox.showinfo(title='Information', message='สร้างเรคคอร์ด สำเร็จ')
             except sqlite3.Error as err:
                 print(err)    
                 
@@ -325,7 +325,7 @@ def clearalldata():
 def deleteTransaction(*args):
     print('guicandidate_action.deleteTransaction')
     if(_w1.Entry_tmpid.get() ==''):
-        tk.messagebox.askquestion(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
+        tk.messagebox.showinfo(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
     else:    
         try:    
             conn = sqlite3.connect('1.db')
@@ -335,7 +335,7 @@ def deleteTransaction(*args):
             c.execute("DELETE FROM borrowcowbuff WHERE id = ?",(id,))
             conn.commit()  
             conn.close()
-            tk.messagebox.askquestion(title='Information', message='ลบเรคคอร์ด สำเร็จ')
+            tk.messagebox.showinfo(title='Information', message='ลบเรคคอร์ด สำเร็จ')
             if _w1.Entry_tmpborrowtype.get() == 'COW':
                 bindingTree(1)
             else:
@@ -425,7 +425,7 @@ def makeBuffalotran(*args):
 def doCancelreturn(*args):
     print('guicandidate_action.doCancelreturn')
     if(_w1.Entry_tmpid.get() ==''):
-        tk.messagebox.askquestion(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
+        tk.messagebox.showinfo(title='Warning', message='เลือกรายการจาก list กดแก้ไข ก่อนทำรายการใดๆ เสมอ \n ยกเว้นสร้างรายการใหม่')
     else:    
         try:
             id = _w1.Entry_tmpid.get()
@@ -436,7 +436,7 @@ def doCancelreturn(*args):
                 payment=?,borrowstatus=? WHERE id = ?",('','',0,0.00,'ยืม',id,))
             conn.commit()  
             conn.close()
-            tk.messagebox.askquestion(title='Information', message='คืนค่า เป็นยืม สำเร็จ')
+            tk.messagebox.showinfo(title='Information', message='คืนค่า เป็นยืม สำเร็จ')
             if(_w1.Entry_tmpborrowtype.get() == 'COW'):
                 bindingTree(1)
             else:
@@ -456,7 +456,7 @@ def searchTransaction(*args):
     searchcid = _w1.Entry_cidsearch.get()
     borrowtype = _w1.Entry_tmpborrowtype.get()
     if(borrowtype == ''):
-        tk.messagebox.askquestion(title='Warning', message='โปรดเลือกการทำรายการ วัวหรือควายก่อน ปุ่มด้านขวา')
+        tk.messagebox.showinfo(title='Warning', message='โปรดเลือกการทำรายการ วัวหรือควายก่อน ปุ่มด้านขวา')
     else:
         for item in _w1.Scrolledtreeview_transaction.get_children():
             _w1.Scrolledtreeview_transaction.delete(item)  
@@ -506,7 +506,7 @@ def createCsvFile():
     searchcid = _w1.Entry_cidsearch.get()
     borrowtype = _w1.Entry_tmpborrowtype.get()
     if(borrowtype == ''):
-        tk.messagebox.askquestion(title='Warning', message='โปรดเลือกการทำรายการ วัวหรือควายก่อน ปุ่มด้านขวา')
+        tk.messagebox.showinfo(title='Warning', message='โปรดเลือกการทำรายการ วัวหรือควายก่อน ปุ่มด้านขวา')
     else:
         try:            
             conn = sqlite3.connect("1.db")
@@ -523,7 +523,7 @@ def createCsvFile():
 
             file.close()    
             conn.close()
-            tk.messagebox.askquestion(title='Information', message='สร้างไฟล์ CSV.csv สำเร็จ')
+            tk.messagebox.showinfo(title='Information', message='สร้างไฟล์ CSV.csv สำเร็จ')
         except sqlite3.Error as err:
             print(err) 
             
@@ -532,7 +532,7 @@ def createJsonFile():
     searchcid = _w1.Entry_cidsearch.get()
     borrowtype = _w1.Entry_tmpborrowtype.get()
     if(borrowtype == ''):
-        tk.messagebox.askquestion(title='Warning', message='โปรดเลือกการทำรายการ วัวหรือควายก่อน ปุ่มด้านขวา')
+        tk.messagebox.showinfo(title='Warning', message='โปรดเลือกการทำรายการ วัวหรือควายก่อน ปุ่มด้านขวา')
     else:
         try:            
             conn = sqlite3.connect("1.db")
@@ -543,16 +543,18 @@ def createJsonFile():
             with open('json.json', "w", encoding="utf-8") as file:
                 file.write('[ \n')
                 for row in rows:
+                    # bdate = '' if row[3] is None else str(row[3])
+                    # btime = '' if row[4] is None else str(row[4])
                     textline = '{"id":"'+str(row[0])+'","cid":"'+row[1]+'","fullname":"'+row[2]+'","borrowdate":"' \
-                        +row[3]+'","borrowtime":"'+row[4]+'","returndate":"'+row[5]+'","returntime":"' \
+                        +row[3]+'","borrowtime":"'+ row[4] +'","returndate":"'+row[5]+'","returntime":"' \
                         +row[6]+'","borrowtype":"'+row[7]+'","borrowhour":"'+str(row[8])+'","payment":"' \
                         +str(row[9])+'","borrowstatus":"'+row[10]+'"},\n'
                     file.write(textline)
-                    # print(textline) # it print all records in the database
+                    print(textline) # it print all records in the database
                 file.write(']')
             file.close()    
             conn.close()
-            tk.messagebox.askquestion(title='Information', message='สร้างไฟล์ Json.json สำเร็จ')    
+            tk.messagebox.showinfo(title='Information', message='สร้างไฟล์ Json.json สำเร็จ')    
         except sqlite3.Error as err:
             print(err) 
             
